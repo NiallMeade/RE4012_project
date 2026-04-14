@@ -9,9 +9,9 @@ except ImportError:
     from tensorflow.lite.python.interpreter import Interpreter
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
-MODEL_PATH  = "models/yolo26n_int8_160.tflite"
-CONF_THRESH = 0.5
-INPUT_SIZE  = 160
+MODEL_PATH  = "models/yolo26n_int8_256.tflite"
+CONF_THRESH = 0.35
+INPUT_SIZE  = 256
 # ──────────────────────────────────────────────────────────────────────────────
 
 COCO_CLASSES = [
@@ -40,10 +40,12 @@ def preprocess(frame, size, inp_detail):
     dtype = inp_detail['dtype']
 
     if dtype == np.float32:
+        print("In float32")
         # float32 and float16 models (float16 is upcast to float32 by TFLite)
         img = (img / 255.0).astype(np.float32)
 
     elif dtype in (np.int8, np.uint8):
+        print("In int8")
         # int8 / uint8 quantized models — apply input quantization
         scale, zero_point = inp_detail['quantization']
         if scale > 0:
