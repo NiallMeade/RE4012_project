@@ -6,6 +6,6 @@ model = YOLO("yolo26n.pt")  # downloads automatically on first run
 model.export(
     format="tflite",
     imgsz=256,        # smaller = faster on Pi; 320 is a good edge trade-off
-    #int8=True,        # quantize to INT8 — big speed boost on ARM
-    #data="coco8.yaml" # needed for INT8 calibration
+    int8=True,        # quantize to INT8 — big speed boost on ARM
+    data="coco8.yaml" # needed for INT8 calibration
 )
