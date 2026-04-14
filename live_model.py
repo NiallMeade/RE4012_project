@@ -34,14 +34,23 @@ def load_model(path):
     interp.allocate_tensors()
     return interp
 
-def preprocess(frame, size, dtype):
+def preprocess(frame, size, inp_detail):
     img = cv2.resize(frame, (size, size))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    dtype = inp_detail['dtype']
 
     if dtype == np.float32:
-        img = img / 255.0
+        # float32 and float16 models (float16 is upcast to float32 by TFLite)
+        img = (img / 255.0).astype(np.float32)
 
-    return np.expand_dims(img, axis=0).astype(dtype)
+    elif dtype in (np.int8, np.uint8):
+        # int8 / uint8 quantized models — apply input quantization
+        scale, zero_point = inp_detail['quantization']
+        if scale > 0:
+            img = (img / 255.0 / scale + zero_point)
+        img = np.clip(img, np.iinfo(dtype).min, np.iinfo(dtype).max).astype(dtype)
+
+    return np.expand_dims(img, axis=0)
 
 def postprocess(output, out_detail, orig_h, orig_w, conf_thresh):
     # ─── Dequantize if needed ─────────────────
@@ -123,7 +132,7 @@ while True:
 
     orig_h, orig_w = frame.shape[:2]
 
-    inp_data = preprocess(frame, INPUT_SIZE, inp_detail['dtype'])
+    inp_data = preprocess(frame, INPUT_SIZE, inp_detail)
 
     t0 = time.perf_counter()
     interp.set_tensor(inp_detail['index'], inp_data)
