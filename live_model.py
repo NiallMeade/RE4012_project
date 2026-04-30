@@ -9,8 +9,8 @@ except ImportError:
     from tensorflow.lite.python.interpreter import Interpreter
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
-MODEL_PATH  = "models/yolo26n_int8_256.tflite"
-CONF_THRESH = 0.35
+MODEL_PATH  = "models/yolo26n_float32_256.tflite"
+CONF_THRESH = 0.4
 INPUT_SIZE  = 256
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -30,7 +30,7 @@ COCO_CLASSES = [
 
 # ─── MODEL ────────────────────────────────────────────────────────────────────
 def load_model(path):
-    interp = Interpreter(model_path=path)
+    interp = Interpreter(model_path=path, num_threads=2)
     interp.allocate_tensors()
     return interp
 
@@ -40,12 +40,10 @@ def preprocess(frame, size, inp_detail):
     dtype = inp_detail['dtype']
 
     if dtype == np.float32:
-        print("In float32")
         # float32 and float16 models (float16 is upcast to float32 by TFLite)
         img = (img / 255.0).astype(np.float32)
 
     elif dtype in (np.int8, np.uint8):
-        print("In int8")
         # int8 / uint8 quantized models — apply input quantization
         scale, zero_point = inp_detail['quantization']
         if scale > 0:
@@ -112,6 +110,9 @@ out_detail = interp.get_output_details()[0]
 print(f"Input shape: {inp_detail['shape']} dtype: {inp_detail['dtype']}")
 print(f"Output shape: {out_detail['shape']} dtype: {out_detail['dtype']}")
 print(f"Quantization: {out_detail['quantization']}")
+
+for detail in interp.get_tensor_details():
+    print(detail['name'], detail['dtype'], detail['quantization'])
 
 # ─── CAMERA ───────────────────────────────────────────────────────────────────
 print("[INFO] Starting camera...")
