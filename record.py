@@ -2,6 +2,8 @@ import subprocess
 import time
 import sys
 from picamera2 import Picamera2
+from picamera2.encoders import H264Encoder
+from picamera2.outputs import FileOutput
 
 # Define the Master resolution and the targets
 master_res = (640, 480)
@@ -23,8 +25,8 @@ def run_capture():
     
     print(f"--- Camera Ready ---")
     picam2.start()
-    picam2.start_recording(master_file)
-    
+    encoder = H264Encoder()
+    picam2.start_recording(encoder, FileOutput(master_file))    
     try:
         print("RECORDING... Press Ctrl+C to stop manually.")
         while True:
