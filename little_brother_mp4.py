@@ -20,7 +20,7 @@ LOG_PATH        = "detections.json"         # ← detection log
 CONF_THRESH     = 0.35
 INPUT_SIZE      = 320
 FACE_EVERY_N    = 5
-FACE_SCALE      = 0.5
+FACE_SCALE      = 1
 IOU_THRESH      = 0.3
 PERSON_CLASS_ID = 0
 # ──────────────────────────────────────────────────────────────────────────────

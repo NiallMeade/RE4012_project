@@ -11,9 +11,9 @@ master_file = "capture_640x480.h264"
 
 # The other resolutions you requested
 targets = [
-    {"res": "480x480", "name": "capture_480x480.mp4"},
-    {"res": "320x320", "name": "capture_320x320.mp4"},
-    {"res": "256x256", "name": "capture_256x256.mp4"}
+    {"res": "480", "name": "capture_480x480.mp4"},
+    {"res": "320", "name": "capture_320x320.mp4"},
+    {"res": "256", "name": "capture_256x256.mp4"}
 ]
 
 picam2 = Picamera2()
@@ -22,6 +22,8 @@ def run_capture():
     # Configure for the highest resolution
     config = picam2.create_video_configuration(main={"size": master_res})
     picam2.configure(config)
+    
+    #picam2.set_controls({"Brightness": 0.25})
     
     print(f"--- Camera Ready ---")
     picam2.start()
@@ -48,8 +50,8 @@ def resize_videos():
         # -c:v libx264: uses a standard encoder for maximum compatibility
         cmd = [
             "ffmpeg", "-y", "-i", master_file,
-            "-vf", f"scale={target['res']}",
-            "-c:v", "libx264", "-preset", "ultrafast", target['name']
+            "-vf", f"crop=ih:ih,scale={target['res']}:{target['res']}",
+            "-c:v", "libx264", "-preset", "slow", target['name']
         ]
         
         subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
