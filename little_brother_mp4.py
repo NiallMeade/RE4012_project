@@ -11,16 +11,16 @@ except ImportError:
     from tensorflow.lite.python.interpreter import Interpreter
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
-MODEL_PATH      = "models/yolo26n_float32_320.tflite"
+MODEL_PATH      = "models/yolo26n_float32_256.tflite"
 ENCODINGS_PATH  = "encodings.pickle"
-VIDEO_PATH      = "capture_320x320.mp4"
+VIDEO_PATH      = "capture_256x256.mp4"
 OUTPUT_PATH     = "output.mp4"
 LOG_PATH        = "detections.json"         # ← detection log
 
 CONF_THRESH     = 0.35
-INPUT_SIZE      = 320
+INPUT_SIZE      = 256
 FACE_EVERY_N    = 5
-FACE_SCALE      = 1
+FACE_SCALE      = 0.5
 IOU_THRESH      = 0.3
 PERSON_CLASS_ID = 0
 # ──────────────────────────────────────────────────────────────────────────────
@@ -181,6 +181,9 @@ log = {
     "frames": []
 }
 
+fps_arr = []
+
+
 # ─── MAIN LOOP ────────────────────────────────────────────────────────────────
 while True:
     ret, frame = cap.read()
@@ -250,7 +253,7 @@ while True:
     frame_count  += 1
     total_frames += 1
     fps = 1000/infer_ms if infer_ms > 0 else 0.0
-
+    fps_arr.append(fps)
     print(f"[INFO] FPS: {fps:.1f}  YOLO: {infer_ms:.1f}ms  Frame: {total_frames}/{total_in}")
 
     cv2.putText(frame, f"FPS: {fps:.1f}  YOLO: {infer_ms:.1f}ms",
@@ -267,4 +270,8 @@ print(f"[INFO] Video saved to {OUTPUT_PATH}")
 log["metadata"]["total_frames_processed"] = total_frames
 with open(LOG_PATH, "w") as f:
     json.dump(log, f, indent=2)
+    
+with open("fps_tracker.txt", "w") as f:
+    for element in fps_arr:
+        f.write(f"{element}\n")
 print(f"[INFO] Detection log saved to {LOG_PATH}")
