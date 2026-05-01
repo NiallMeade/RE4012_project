@@ -179,7 +179,7 @@ print(f"[INFO] Output → shape={out_detail['shape']} dtype={out_detail['dtype']
 print("[INFO] Starting camera...")
 picam2 = Picamera2()
 picam2.configure(picam2.create_preview_configuration(
-    main={"format": "XRGB8888", "size": (320, 320)}
+    main={"format": "XRGB8888", "size": (INPUT_SIZE, INPUT_SIZE)}
 ))
 picam2.start()
 time.sleep(1)
