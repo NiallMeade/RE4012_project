@@ -27,7 +27,6 @@ LOG_PATH = "detections.json"
 
 # Scenario label – change this string for each lighting condition run so that
 # the saved plot filenames and quality-report titles reflect the scenario.
-# Examples: "bright_indoor", "outdoor_morning", "outdoor_evening", "backlit"
 SCENARIO_LABEL = "test4"
 
 CONF_THRESH = 0.35
@@ -228,7 +227,7 @@ def build_entity_timelines(log):
             raw[label]["confidences"].append(conf)
 
     fps = log["metadata"]["fps"]
-    gap_threshold = (FACE_EVERY_N + 1) / fps # gap > this → new interval
+    gap_threshold = (FACE_EVERY_N + 1) / fps # gap > this to new interval
 
     entities = {}
     for label, data in raw.items():
@@ -417,9 +416,9 @@ def analyse_quality(entities, log, scenario_label):
         )
 
     if not issues:
-        print("  ✓ No significant quality issues detected.")
+        print("  No significant quality issues detected.")
     else:
-        print("\n  ⚠  Issues detected:")
+        print("\n   Issues detected:")
         for i, iss in enumerate(issues, 1):
             print(f"    {i}. {iss}")
         print("\n  Suggestions:")
@@ -540,7 +539,7 @@ while True:
             name, face_conf = (person_name_confs[person_idx]
                                if person_idx < len(person_name_confs) else (None, None))
             person_idx += 1
-            # ★ Use the actual recognised name, not just "person"
+            # Use the actual recognised name, not just "person"
             frame_detections.append({
                 "label":      name if name else "Unknown",
                 "type":       "person",
