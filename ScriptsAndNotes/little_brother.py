@@ -10,16 +10,15 @@ try:
 except ImportError:
     from tensorflow.lite.python.interpreter import Interpreter
 
-# ─── CONFIG ───────────────────────────────────────────────────────────────────
-MODEL_PATH      = "models/yolo26n_float32_320.tflite"
-ENCODINGS_PATH  = "encodings.pickle"
-CONF_THRESH     = 0.35
-INPUT_SIZE      = 320
-FACE_EVERY_N    = 5     # Run face recognition every N frames (tune for speed vs responsiveness)
-FACE_SCALE      = 0.5   # Downsample person crop before face recognition (0.5 = half size)
-IOU_THRESH      = 0.3   # Min IoU to match a cached face name to a current detection
-PERSON_CLASS_ID = 0     # COCO class index for "person"
-# ──────────────────────────────────────────────────────────────────────────────
+# Config
+MODEL_PATH = "models/yolo26n_float32_320.tflite"
+ENCODINGS_PATH = "encodings.pickle"
+CONF_THRESH = 0.35
+INPUT_SIZE = 320
+FACE_EVERY_N = 5 # Run face recognition every N frames
+cv_scalar = 2 # Downsample person crop before face recognition
+IOU_THRESH = 0.3 # Minimum IoU to match a cached face name to a current detection
+PERSON_CLASS_ID = 0 # COCO class index for "person"
 
 COCO_CLASSES = [
     "person","bicycle","car","motorcycle","airplane","bus","train","truck",
@@ -35,7 +34,6 @@ COCO_CLASSES = [
     "hair drier","toothbrush"
 ]
 
-# ─── YOLO ─────────────────────────────────────────────────────────────────────
 def load_model(path):
     interp = Interpreter(model_path=path, num_threads=4)
     interp.allocate_tensors()
@@ -75,8 +73,8 @@ def postprocess(output, out_detail, orig_h, orig_w, conf_thresh):
         results.append((x1, y1, x2, y2, float(conf), int(cls_id)))
     return results
 
-# ─── FACE RECOGNITION ─────────────────────────────────────────────────────────
-def recognize_in_crop(crop_bgr, known_encodings, known_names):
+# Face recognition
+def recognize_in_crop(crop_bgr, known_face_encodings, known_face_names):
     """
     Run face recognition inside a single person crop.
     Returns a name string, or None if no face found.
@@ -85,25 +83,25 @@ def recognize_in_crop(crop_bgr, known_encodings, known_names):
     if h < 20 or w < 20:
         return None
 
-    small = cv2.resize(crop_bgr, (0, 0), fx=FACE_SCALE, fy=FACE_SCALE)
-    rgb   = cv2.cvtColor(small, cv2.COLOR_BGR2RGB)
+    resized_frame = cv2.resize(crop_bgr, (0, 0), fx=(1/cv_scalar), fy=(1/cv_scalar))
+    rgb_resized_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
 
-    locations = face_recognition.face_locations(rgb, model="hog")
-    if not locations:
+    face_locations = face_recognition.face_locations(rgb_resized_frame, model="hog")
+    if not face_locations:
         return None
 
-    encodings = face_recognition.face_encodings(rgb, locations)
-    if not encodings:
+    face_encodings = face_recognition.face_encodings(rgb_resized_frame, face_locations)
+    if not face_encodings:
         return None
 
     # Take the first (most prominent) face in the crop
-    enc = encodings[0]
-    distances = face_recognition.face_distance(known_encodings, enc)
-    best_idx  = int(np.argmin(distances))
+    enc = face_encodings[0]
+    face_distances = face_recognition.face_distance(known_face_encodings, enc)
+    best_match_idx  = int(np.argmin(face_distances))
 
-    matches = face_recognition.compare_faces(known_encodings, enc)
-    if matches[best_idx]:
-        return known_names[best_idx]
+    matches = face_recognition.compare_faces(known_face_encodings, enc)
+    if matches[best_match_idx]:
+        return known_face_names[best_match_idx]
     return "Unknown"
 
 def compute_iou(boxA, boxB):
@@ -128,16 +126,15 @@ def match_names_to_boxes(current_person_boxes, cached_labels):
     names = []
     for box in current_person_boxes:
         best_name = None
-        best_iou  = IOU_THRESH  # minimum threshold to accept a match
+        best_iou = IOU_THRESH # minimum threshold to accept a match
         for cached_box, cached_name in cached_labels:
             iou = compute_iou(box, cached_box)
             if iou > best_iou:
-                best_iou  = iou
+                best_iou = iou
                 best_name = cached_name
         names.append(best_name)
     return names
 
-# ─── DRAWING ──────────────────────────────────────────────────────────────────
 def draw_detections(frame, boxes, person_names):
     """
     Draw all YOLO detections. Person boxes get a name label (if recognised),
@@ -161,16 +158,16 @@ def draw_detections(frame, boxes, person_names):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1, cv2.LINE_AA)
     return frame
 
-# ─── INIT ─────────────────────────────────────────────────────────────────────
+
 print("[INFO] Loading face encodings...")
 with open(ENCODINGS_PATH, "rb") as f:
     enc_data = pickle.loads(f.read())
 known_face_encodings = enc_data["encodings"]
-known_face_names     = enc_data["names"]
+known_face_names = enc_data["names"]
 print(f"[INFO] {len(known_face_names)} face(s) loaded: {set(known_face_names)}")
 
 print("[INFO] Loading YOLO model...")
-interp     = load_model(MODEL_PATH)
+interp = load_model(MODEL_PATH)
 inp_detail = interp.get_input_details()[0]
 out_detail = interp.get_output_details()[0]
 print(f"[INFO] Input  → shape={inp_detail['shape']} dtype={inp_detail['dtype']}")
@@ -184,34 +181,31 @@ picam2.configure(picam2.create_preview_configuration(
 picam2.start()
 time.sleep(1)
 
-# ─── STATE ────────────────────────────────────────────────────────────────────
-frame_count  = 0
-start_time   = time.time()
-fps          = 0.0
+frame_count = 0
+start_time = time.time()
+fps = 0.0
 total_frames = 0
 
 # Cached face results: list of ((x1,y1,x2,y2), name) from last face-rec run
 cached_labels = []
 
-# ─── MAIN LOOP ────────────────────────────────────────────────────────────────
 while True:
     raw = picam2.capture_array()
     frame = cv2.cvtColor(raw, cv2.COLOR_BGRA2BGR)
     orig_h, orig_w = frame.shape[:2]
 
-    # ── YOLO inference ────────────────────────────────────────────────────────
-    t0       = time.perf_counter()
+    t0 = time.perf_counter()
     inp_data = preprocess(frame, INPUT_SIZE, inp_detail)
     interp.set_tensor(inp_detail['index'], inp_data)
     interp.invoke()
-    output    = interp.get_tensor(out_detail['index'])
-    infer_ms  = (time.perf_counter() - t0) * 1000
+    output = interp.get_tensor(out_detail['index'])
+    infer_ms = (time.perf_counter() - t0) * 1000
 
-    all_boxes    = postprocess(output, out_detail, orig_h, orig_w, CONF_THRESH)
+    all_boxes = postprocess(output, out_detail, orig_h, orig_w, CONF_THRESH)
     person_boxes = [(x1, y1, x2, y2) for x1, y1, x2, y2, _, cls in all_boxes
                     if cls == PERSON_CLASS_ID]
 
-    # ── Face recognition (every FACE_EVERY_N frames) ──────────────────────────
+    # Face recognition (every FACE_EVERY_N frames)
     if total_frames % FACE_EVERY_N == 0:
         new_labels = []
         for (x1, y1, x2, y2) in person_boxes:
@@ -220,22 +214,19 @@ while True:
             new_labels.append(((x1, y1, x2, y2), name))
         cached_labels = new_labels
 
-    # ── Match cached names to current person positions ─────────────────────────
     person_names = match_names_to_boxes(person_boxes, cached_labels)
 
-    # ── Draw ──────────────────────────────────────────────────────────────────
     frame = draw_detections(frame, all_boxes, person_names)
 
-    # ── FPS overlay ───────────────────────────────────────────────────────────
-    frame_count  += 1
+    frame_count += 1
     total_frames += 1
     elapsed = time.time() - start_time
     if elapsed > 1.0:
-        fps        = frame_count / elapsed
+        fps = frame_count / elapsed
         frame_count = 0
-        start_time  = time.time()
+        start_time = time.time()
 
-    cv2.putText(frame, f"FPS: {fps:.1f}  YOLO: {infer_ms:.1f}ms",
+    cv2.putText(frame, f"FPS: {fps:.1f}  Inference time: {infer_ms:.1f}ms",
                 (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2, cv2.LINE_AA)
 
     cv2.imshow("YOLO + Face Recognition", frame)

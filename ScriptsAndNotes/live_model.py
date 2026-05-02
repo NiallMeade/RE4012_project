@@ -8,11 +8,9 @@ try:
 except ImportError:
     from tensorflow.lite.python.interpreter import Interpreter
 
-# ─── CONFIG ───────────────────────────────────────────────────────────────────
 MODEL_PATH  = "models/yolo26n_float32_256.tflite"
 CONF_THRESH = 0.4
 INPUT_SIZE  = 256
-# ──────────────────────────────────────────────────────────────────────────────
 
 COCO_CLASSES = [
     "person","bicycle","car","motorcycle","airplane","bus","train","truck",
@@ -28,7 +26,6 @@ COCO_CLASSES = [
     "hair drier","toothbrush"
 ]
 
-# ─── MODEL ────────────────────────────────────────────────────────────────────
 def load_model(path):
     interp = Interpreter(model_path=path, num_threads=2)
     interp.allocate_tensors()
@@ -40,11 +37,8 @@ def preprocess(frame, size, inp_detail):
     dtype = inp_detail['dtype']
 
     if dtype == np.float32:
-        # float32 and float16 models (float16 is upcast to float32 by TFLite)
         img = (img / 255.0).astype(np.float32)
-
     elif dtype in (np.int8, np.uint8):
-        # int8 / uint8 quantized models — apply input quantization
         scale, zero_point = inp_detail['quantization']
         if scale > 0:
             img = (img / 255.0 / scale + zero_point)
@@ -53,40 +47,27 @@ def preprocess(frame, size, inp_detail):
     return np.expand_dims(img, axis=0)
 
 def postprocess(output, out_detail, orig_h, orig_w, conf_thresh):
-    # ─── Dequantize if needed ─────────────────
     scale, zero_point = out_detail['quantization']
     if scale > 0:
         output = (output.astype(np.float32) - zero_point) * scale
     else:
         output = output.astype(np.float32)
 
-    detections = output[0]  # shape: (300, 6)
+    detections = output[0]
 
     results = []
 
     for det in detections:
         x1, y1, x2, y2, conf, cls_id = det
-
         if conf < conf_thresh:
             continue
-
-        # Clamp normalized coords
-        x1 = max(0, min(1, x1))
-        y1 = max(0, min(1, y1))
-        x2 = max(0, min(1, x2))
-        y2 = max(0, min(1, y2))
-
-        # Scale to pixel coords
-        x1 = int(x1 * orig_w)
-        y1 = int(y1 * orig_h)
-        x2 = int(x2 * orig_w)
-        y2 = int(y2 * orig_h)
-
+        x1 = int(max(0, min(1, x1)) * orig_w)
+        y1 = int(max(0, min(1, y1)) * orig_h)
+        x2 = int(max(0, min(1, x2)) * orig_w)
+        y2 = int(max(0, min(1, y2)) * orig_h)
         if x2 <= x1 or y2 <= y1:
             continue
-
         results.append((x1, y1, x2, y2, float(conf), int(cls_id)))
-
     return results
 
 def draw_results(frame, boxes):
@@ -101,7 +82,6 @@ def draw_results(frame, boxes):
 
     return frame
 
-# ─── INIT ─────────────────────────────────────────────────────────────────────
 print("[INFO] Loading model...")
 interp = load_model(MODEL_PATH)
 inp_detail = interp.get_input_details()[0]
@@ -114,7 +94,6 @@ print(f"Quantization: {out_detail['quantization']}")
 for detail in interp.get_tensor_details():
     print(detail['name'], detail['dtype'], detail['quantization'])
 
-# ─── CAMERA ───────────────────────────────────────────────────────────────────
 print("[INFO] Starting camera...")
 picam2 = Picamera2()
 picam2.configure(picam2.create_preview_configuration(
@@ -123,12 +102,10 @@ picam2.configure(picam2.create_preview_configuration(
 picam2.start()
 time.sleep(1)
 
-# ─── FPS ──────────────────────────────────────────────────────────────────────
 frame_count = 0
 start_time = time.time()
 fps = 0.0
 
-# ─── MAIN LOOP ────────────────────────────────────────────────────────────────
 while True:
     frame = picam2.capture_array()
     frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
