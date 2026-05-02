@@ -1,0 +1,78 @@
+{
+  "scenario": "bright_indoor_live",
+  "quality": {
+    "global_avg_confidence": 0.5171,
+    "unknown_ratio": 0.2299,
+    "flicker_entities": {},
+    "issues": [],
+    "suggestions": []
+  },
+  "entities": {
+    "couch": {
+      "n_frames": 79,
+      "mean_confidence": 0.4491,
+      "std_confidence": 0.0757,
+      "intervals": [
+        [
+          0.0,
+          3.2
+        ]
+      ]
+    },
+    "chair": {
+      "n_frames": 97,
+      "mean_confidence": 0.6218,
+      "std_confidence": 0.0636,
+      "intervals": [
+        [
+          0.0,
+          3.2
+        ]
+      ]
+    },
+    "dining table": {
+      "n_frames": 85,
+      "mean_confidence": 0.4241,
+      "std_confidence": 0.0323,
+      "intervals": [
+        [
+          0.0,
+          3.2
+        ]
+      ]
+    },
+    "Unknown": {
+      "n_frames": 20,
+      "mean_confidence": 0.8585,
+      "std_confidence": 0.0839,
+      "intervals": [
+        [
+          0.333,
+          0.967
+        ]
+      ]
+    },
+    "cup": {
+      "n_frames": 69,
+      "mean_confidence": 0.4184,
+      "std_confidence": 0.0342,
+      "intervals": [
+        [
+          0.6,
+          3.2
+        ]
+      ]
+    },
+    "Brogan": {
+      "n_frames": 67,
+      "mean_confidence": 0.6293,
+      "std_confidence": 0.0212,
+      "intervals": [
+        [
+          1.0,
+          3.2
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "scenario": "test4",
+  "quality": {
+    "global_avg_confidence": 0.8793,
+    "unknown_ratio": 1.0,
+    "flicker_entities": {
+      "bowl": 0.1438,
+      "elephant": 0.2016
+    },
+    "issues": [
+      "High Unknown ratio (100.0% > 30%)",
+      "Flickering confidence for: bowl (\u03c3=0.14), elephant (\u03c3=0.20)"
+    ],
+    "suggestions": [
+      "Many persons are unidentified. Likely causes: extreme face angle, partial occlusion, or the crop resolution being too small for the face_recognition HOG model. Try higher resolution face crop or more diverse face angles for training data.",
+      "Confidence flickering suggests intermittent occlusion orexcessively lenient confidence threshold. Try increasing confidence threshold."
+    ]
+  },
+  "entities": {
+    "Unknown": {
+      "n_frames": 825,
+      "mean_confidence": 0.9399,
+      "std_confidence": 0.0486,
+      "intervals": [
+        [
+          0.0,
+          27.633
+        ]
+      ]
+    },
+    "Unknown_1": {
+      "n_frames": 593,
+      "mean_confidence": 0.8972,
+      "std_confidence": 0.0882,
+      "intervals": [
+        [
+          1.833,
+          1.833
+        ],
+        [
+          2.033,
+          10.6
+        ],
+        [
+          14.833,
+          25.9
+        ],
+        [
+          26.833,
+          26.967
+        ]
+      ]
+    },
+    "cell phone": {
+      "n_frames": 4,
+      "mean_confidence": 0.4387,
+      "std_confidence": 0.0606,
+      "intervals": [
+        [
+          2.0,
+          2.067
+        ],
+        [
+          25.133,
+          25.133
+        ]
+      ]
+    },
+    "Unknown_2": {
+      "n_frames": 6,
+      "mean_confidence": 0.4599,
+      "std_confidence": 0.0354,
+      "intervals": [
+        [
+          3.433,
+          3.433
+        ],
+        [
+          10.5,
+          10.567
+        ],
+        [
+          15.533,
+          15.533
+        ],
+        [
+          17.933,
+          17.933
+        ],
+        [
+          18.5,
+          18.5
+        ]
+      ]
+    },
+    "wine glass": {
+      "n_frames": 4,
+      "mean_confidence": 0.6095,
+      "std_confidence": 0.0942,
+      "intervals": [
+        [
+          4.333,
+          4.367
+        ],
+        [
+          17.767,
+          17.8
+        ]
+      ]
+    },
+    "banana": {
+      "n_frames": 62,
+      "mean_confidence": 0.5222,
+      "std_confidence": 0.088,
+      "intervals": [
+        [
+          13.167,
+          13.467
+        ],
+        [
+          15.167,
+          15.367
+        ],
+        [
+          15.933,
+          17.333
+        ],
+        [
+          17.567,
+          18.367
+        ]
+      ]
+    },
+    "bowl": {
+      "n_frames": 32,
+      "mean_confidence": 0.524,
+      "std_confidence": 0.1438,
+      "intervals": [
+        [
+          14.867,
+          14.867
+        ],
+        [
+          15.833,
+          16.1
+        ],
+        [
+          16.533,
+          17.067
+        ],
+        [
+          18.167,
+          18.4
+        ],
+        [
+          18.733,
+          18.733
+        ],
+        [
+          19.033,
+          19.033
+        ],
+        [
+          19.367,
+          19.367
+        ]
+      ]
+    },
+    "frisbee": {
+      "n_frames": 29,
+      "mean_confidence": 0.4883,
+      "std_confidence": 0.1091,
+      "intervals": [
+        [
+          15.167,
+          15.167
+        ],
+        [
+          15.667,
+          15.667
+        ],
+        [
+          17.7,
+          17.7
+        ],
+        [
+          19.567,
+          19.567
+        ],
+        [
+          23.567,
+          24.733
+        ],
+        [
+          25.067,
+          25.167
+        ]
+      ]
+    },
+    "bench": {
+      "n_frames": 13,
+      "mean_confidence": 0.4776,
+      "std_confidence": 0.0886,
+      "intervals": [
+        [
+          18.567,
+          18.567
+        ],
+        [
+          18.867,
+          19.5
+        ]
+      ]
+    },
+    "dog": {
+      "n_frames": 3,
+      "mean_confidence": 0.566,
+      "std_confidence": 0.0905,
+      "intervals": [
+        [
+          26.4,
+          26.467
+        ]
+      ]
+    },
+    "elephant": {
+      "n_frames": 4,
+      "mean_confidence": 0.6211,
+      "std_confidence": 0.2016,
+      "intervals": [
+        [
+          26.533,
+          26.567
+        ],
+        [
+          27.133,
+          27.167
+        ]
+      ]
+    }
+  }
+}

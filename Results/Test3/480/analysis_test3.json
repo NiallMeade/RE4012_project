@@ -1,0 +1,468 @@
+{
+  "scenario": "test3",
+  "quality": {
+    "global_avg_confidence": 0.5982,
+    "unknown_ratio": 0.3243,
+    "flicker_entities": {
+      "Unknown": 0.1266,
+      "cell phone": 0.1407,
+      "frisbee": 0.136,
+      "keyboard": 0.1442
+    },
+    "issues": [
+      "High Unknown ratio (32.4% > 30%)",
+      "Flickering confidence for: Unknown (\u03c3=0.13), cell phone (\u03c3=0.14), frisbee (\u03c3=0.14), keyboard (\u03c3=0.14)"
+    ],
+    "suggestions": [
+      "Many persons are unidentified. Likely causes: extreme face angle, partial occlusion, or the crop resolution being too small for the face_recognition HOG model. Try higher resolution face crop or more diverse face angles for training data.",
+      "Confidence flickering suggests intermittent occlusion orexcessively lenient confidence threshold. Try increasing confidence threshold."
+    ]
+  },
+  "entities": {
+    "Niall": {
+      "n_frames": 748,
+      "mean_confidence": 0.5597,
+      "std_confidence": 0.0316,
+      "intervals": [
+        [
+          0.0,
+          9.967
+        ],
+        [
+          10.167,
+          11.633
+        ],
+        [
+          12.333,
+          25.9
+        ]
+      ]
+    },
+    "chair": {
+      "n_frames": 254,
+      "mean_confidence": 0.6357,
+      "std_confidence": 0.1168,
+      "intervals": [
+        [
+          0.2,
+          1.867
+        ],
+        [
+          7.533,
+          12.633
+        ],
+        [
+          23.533,
+          25.9
+        ]
+      ]
+    },
+    "Unknown": {
+      "n_frames": 404,
+      "mean_confidence": 0.7879,
+      "std_confidence": 0.1266,
+      "intervals": [
+        [
+          1.833,
+          1.833
+        ],
+        [
+          2.067,
+          3.967
+        ],
+        [
+          4.5,
+          4.8
+        ],
+        [
+          5.0,
+          7.367
+        ],
+        [
+          10.0,
+          10.133
+        ],
+        [
+          10.867,
+          10.933
+        ],
+        [
+          11.667,
+          12.3
+        ],
+        [
+          12.533,
+          16.867
+        ],
+        [
+          17.167,
+          20.8
+        ],
+        [
+          21.833,
+          21.967
+        ],
+        [
+          23.0,
+          23.5
+        ]
+      ]
+    },
+    "tv": {
+      "n_frames": 163,
+      "mean_confidence": 0.4107,
+      "std_confidence": 0.0435,
+      "intervals": [
+        [
+          2.467,
+          2.467
+        ],
+        [
+          2.933,
+          2.967
+        ],
+        [
+          3.367,
+          3.533
+        ],
+        [
+          3.8,
+          3.933
+        ],
+        [
+          5.333,
+          5.333
+        ],
+        [
+          5.9,
+          5.9
+        ],
+        [
+          6.267,
+          6.833
+        ],
+        [
+          8.267,
+          8.3
+        ],
+        [
+          8.633,
+          10.833
+        ],
+        [
+          11.2,
+          11.367
+        ],
+        [
+          16.9,
+          17.0
+        ],
+        [
+          17.8,
+          18.1
+        ],
+        [
+          19.0,
+          19.567
+        ],
+        [
+          22.667,
+          22.933
+        ],
+        [
+          23.4,
+          24.7
+        ],
+        [
+          25.233,
+          25.9
+        ]
+      ]
+    },
+    "Unknown_1": {
+      "n_frames": 14,
+      "mean_confidence": 0.4279,
+      "std_confidence": 0.0502,
+      "intervals": [
+        [
+          2.467,
+          2.467
+        ],
+        [
+          5.433,
+          5.433
+        ],
+        [
+          5.733,
+          5.733
+        ],
+        [
+          6.533,
+          6.533
+        ],
+        [
+          6.967,
+          6.967
+        ],
+        [
+          12.0,
+          12.067
+        ],
+        [
+          16.167,
+          16.167
+        ],
+        [
+          18.633,
+          18.667
+        ],
+        [
+          18.867,
+          18.867
+        ],
+        [
+          19.7,
+          19.7
+        ],
+        [
+          20.433,
+          20.433
+        ],
+        [
+          23.2,
+          23.2
+        ]
+      ]
+    },
+    "Brogan": {
+      "n_frames": 110,
+      "mean_confidence": 0.5923,
+      "std_confidence": 0.0538,
+      "intervals": [
+        [
+          4.0,
+          4.467
+        ],
+        [
+          4.833,
+          4.967
+        ],
+        [
+          7.0,
+          7.133
+        ],
+        [
+          16.333,
+          16.467
+        ],
+        [
+          16.833,
+          17.133
+        ],
+        [
+          20.0,
+          20.133
+        ],
+        [
+          20.5,
+          20.633
+        ],
+        [
+          20.833,
+          22.967
+        ]
+      ]
+    },
+    "cell phone": {
+      "n_frames": 166,
+      "mean_confidence": 0.6127,
+      "std_confidence": 0.1407,
+      "intervals": [
+        [
+          4.767,
+          7.167
+        ],
+        [
+          16.567,
+          16.667
+        ],
+        [
+          17.433,
+          17.7
+        ],
+        [
+          18.0,
+          19.3
+        ],
+        [
+          19.733,
+          22.1
+        ]
+      ]
+    },
+    "bowl": {
+      "n_frames": 57,
+      "mean_confidence": 0.4885,
+      "std_confidence": 0.084,
+      "intervals": [
+        [
+          10.8,
+          12.467
+        ],
+        [
+          12.733,
+          12.733
+        ],
+        [
+          15.833,
+          15.9
+        ],
+        [
+          19.767,
+          20.033
+        ],
+        [
+          22.6,
+          22.9
+        ],
+        [
+          23.767,
+          23.8
+        ],
+        [
+          24.033,
+          24.1
+        ]
+      ]
+    },
+    "frisbee": {
+      "n_frames": 136,
+      "mean_confidence": 0.5724,
+      "std_confidence": 0.136,
+      "intervals": [
+        [
+          11.067,
+          11.433
+        ],
+        [
+          12.1,
+          12.133
+        ],
+        [
+          12.5,
+          12.5
+        ],
+        [
+          13.067,
+          13.067
+        ],
+        [
+          13.533,
+          16.267
+        ],
+        [
+          17.4,
+          17.433
+        ],
+        [
+          17.867,
+          17.9
+        ],
+        [
+          18.167,
+          18.3
+        ],
+        [
+          18.567,
+          19.133
+        ],
+        [
+          19.633,
+          20.8
+        ],
+        [
+          21.967,
+          22.133
+        ],
+        [
+          22.4,
+          22.467
+        ],
+        [
+          22.767,
+          22.767
+        ]
+      ]
+    },
+    "banana": {
+      "n_frames": 103,
+      "mean_confidence": 0.5254,
+      "std_confidence": 0.0921,
+      "intervals": [
+        [
+          12.0,
+          12.5
+        ],
+        [
+          13.4,
+          13.433
+        ],
+        [
+          13.867,
+          13.867
+        ],
+        [
+          14.067,
+          14.067
+        ],
+        [
+          16.1,
+          16.567
+        ],
+        [
+          17.367,
+          17.367
+        ],
+        [
+          18.167,
+          18.2
+        ],
+        [
+          18.467,
+          18.667
+        ],
+        [
+          18.9,
+          22.4
+        ],
+        [
+          22.667,
+          22.7
+        ]
+      ]
+    },
+    "keyboard": {
+      "n_frames": 103,
+      "mean_confidence": 0.5906,
+      "std_confidence": 0.1442,
+      "intervals": [
+        [
+          16.267,
+          17.2
+        ],
+        [
+          17.667,
+          18.033
+        ],
+        [
+          19.233,
+          19.567
+        ],
+        [
+          19.9,
+          22.233
+        ]
+      ]
+    }
+  }
+}

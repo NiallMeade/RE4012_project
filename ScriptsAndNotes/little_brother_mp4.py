@@ -11,14 +11,14 @@ except ImportError:
     from tensorflow.lite.python.interpreter import Interpreter
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
-MODEL_PATH      = "models/yolo26n_float32_256.tflite"
+MODEL_PATH      = "models/yolo26n_float32_320.tflite"
 ENCODINGS_PATH  = "encodings.pickle"
-VIDEO_PATH      = "capture_256x256.mp4"
+VIDEO_PATH      = "capture_320x320.mp4"
 OUTPUT_PATH     = "output.mp4"
 LOG_PATH        = "detections.json"         # ← detection log
 
 CONF_THRESH     = 0.35
-INPUT_SIZE      = 256
+INPUT_SIZE      = 320
 FACE_EVERY_N    = 5
 FACE_SCALE      = 0.5
 IOU_THRESH      = 0.3

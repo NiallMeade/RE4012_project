@@ -1,0 +1,350 @@
+{
+  "scenario": "test1",
+  "quality": {
+    "global_avg_confidence": 0.7555,
+    "unknown_ratio": 0.8125,
+    "flicker_entities": {
+      "Unknown": 0.1252,
+      "Unknown_1": 0.1461,
+      "cell phone": 0.1313,
+      "banana": 0.1261
+    },
+    "issues": [
+      "High Unknown ratio (81.2% > 30%)",
+      "Flickering confidence for: Unknown (\u03c3=0.13), Unknown_1 (\u03c3=0.15), cell phone (\u03c3=0.13), banana (\u03c3=0.13)"
+    ],
+    "suggestions": [
+      "Many persons are unidentified. Likely causes: extreme face angle, partial occlusion, or the crop resolution being too small for the face_recognition HOG model. Try higher resolution face crop or more diverse face angles for training data.",
+      "Confidence flickering suggests intermittent occlusion orexcessively lenient confidence threshold. Try increasing confidence threshold."
+    ]
+  },
+  "entities": {
+    "Unknown": {
+      "n_frames": 677,
+      "mean_confidence": 0.8987,
+      "std_confidence": 0.1252,
+      "intervals": [
+        [
+          0.0,
+          8.8
+        ],
+        [
+          9.5,
+          9.633
+        ],
+        [
+          11.0,
+          23.633
+        ],
+        [
+          24.533,
+          25.667
+        ]
+      ]
+    },
+    "chair": {
+      "n_frames": 353,
+      "mean_confidence": 0.7439,
+      "std_confidence": 0.0821,
+      "intervals": [
+        [
+          0.0,
+          3.4
+        ],
+        [
+          3.6,
+          3.9
+        ],
+        [
+          7.867,
+          13.433
+        ],
+        [
+          13.667,
+          13.7
+        ],
+        [
+          20.033,
+          20.033
+        ],
+        [
+          21.033,
+          21.033
+        ],
+        [
+          23.367,
+          25.667
+        ]
+      ]
+    },
+    "Unknown_1": {
+      "n_frames": 337,
+      "mean_confidence": 0.8184,
+      "std_confidence": 0.1461,
+      "intervals": [
+        [
+          3.133,
+          3.133
+        ],
+        [
+          3.467,
+          5.133
+        ],
+        [
+          5.667,
+          6.133
+        ],
+        [
+          6.6,
+          6.8
+        ],
+        [
+          7.167,
+          7.3
+        ],
+        [
+          7.5,
+          7.8
+        ],
+        [
+          13.167,
+          20.633
+        ],
+        [
+          21.167,
+          21.3
+        ],
+        [
+          22.667,
+          23.633
+        ],
+        [
+          25.667,
+          25.667
+        ]
+      ]
+    },
+    "remote": {
+      "n_frames": 16,
+      "mean_confidence": 0.4812,
+      "std_confidence": 0.0895,
+      "intervals": [
+        [
+          3.333,
+          3.8
+        ],
+        [
+          4.433,
+          4.9
+        ]
+      ]
+    },
+    "Unknown_2": {
+      "n_frames": 26,
+      "mean_confidence": 0.4928,
+      "std_confidence": 0.0902,
+      "intervals": [
+        [
+          3.533,
+          3.733
+        ],
+        [
+          7.8,
+          7.8
+        ],
+        [
+          17.733,
+          18.0
+        ],
+        [
+          18.267,
+          18.733
+        ],
+        [
+          23.2,
+          23.2
+        ],
+        [
+          23.433,
+          23.433
+        ]
+      ]
+    },
+    "Brogan": {
+      "n_frames": 40,
+      "mean_confidence": 0.5811,
+      "std_confidence": 0.0231,
+      "intervals": [
+        [
+          5.167,
+          5.633
+        ],
+        [
+          6.667,
+          7.133
+        ],
+        [
+          7.333,
+          7.467
+        ],
+        [
+          20.833,
+          20.967
+        ]
+      ]
+    },
+    "cell phone": {
+      "n_frames": 23,
+      "mean_confidence": 0.5305,
+      "std_confidence": 0.1313,
+      "intervals": [
+        [
+          5.367,
+          5.533
+        ],
+        [
+          7.2,
+          7.2
+        ],
+        [
+          16.1,
+          16.167
+        ],
+        [
+          16.533,
+          16.967
+        ],
+        [
+          17.2,
+          17.333
+        ],
+        [
+          20.267,
+          20.267
+        ]
+      ]
+    },
+    "Niall": {
+      "n_frames": 200,
+      "mean_confidence": 0.5582,
+      "std_confidence": 0.0203,
+      "intervals": [
+        [
+          6.167,
+          6.633
+        ],
+        [
+          7.833,
+          7.967
+        ],
+        [
+          8.333,
+          8.467
+        ],
+        [
+          8.833,
+          9.467
+        ],
+        [
+          9.667,
+          10.967
+        ],
+        [
+          20.333,
+          21.133
+        ],
+        [
+          21.333,
+          22.633
+        ],
+        [
+          23.667,
+          25.633
+        ]
+      ]
+    },
+    "banana": {
+      "n_frames": 18,
+      "mean_confidence": 0.4862,
+      "std_confidence": 0.1261,
+      "intervals": [
+        [
+          12.0,
+          12.1
+        ],
+        [
+          20.267,
+          20.467
+        ],
+        [
+          20.733,
+          20.967
+        ]
+      ]
+    },
+    "bowl": {
+      "n_frames": 77,
+      "mean_confidence": 0.4997,
+      "std_confidence": 0.098,
+      "intervals": [
+        [
+          13.0,
+          14.767
+        ],
+        [
+          15.733,
+          16.533
+        ],
+        [
+          18.533,
+          19.0
+        ],
+        [
+          20.6,
+          20.667
+        ]
+      ]
+    },
+    "keyboard": {
+      "n_frames": 133,
+      "mean_confidence": 0.6415,
+      "std_confidence": 0.1006,
+      "intervals": [
+        [
+          15.833,
+          16.7
+        ],
+        [
+          17.033,
+          20.633
+        ]
+      ]
+    },
+    "cup": {
+      "n_frames": 14,
+      "mean_confidence": 0.593,
+      "std_confidence": 0.1063,
+      "intervals": [
+        [
+          16.9,
+          17.2
+        ],
+        [
+          20.033,
+          20.333
+        ]
+      ]
+    },
+    "laptop": {
+      "n_frames": 3,
+      "mean_confidence": 0.4195,
+      "std_confidence": 0.0799,
+      "intervals": [
+        [
+          20.7,
+          20.8
+        ]
+      ]
+    }
+  }
+}
