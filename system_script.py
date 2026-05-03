@@ -231,13 +231,13 @@ def build_entity_timelines(log):
 
     entities = {}
     for label, data in raw.items():
-        ts   = data["timestamps"]
+        ts = data["timestamps"]
         confs = data["confidences"]
         if len(ts) < MIN_DETECTION_FRAMES:
             continue  # skip noise
         intervals = []
         seg_start = ts[0]
-        prev_t    = ts[0]
+        prev_t = ts[0]
         for t in ts[1:]:
             if t - prev_t > gap_threshold:
                 intervals.append((seg_start, prev_t))
@@ -258,7 +258,7 @@ def plot_presence_timeline(entities, video_duration, scenario_label):
     Gantt-style chart: one horizontal bar per entity showing when they were
     present. Separate panels for people vs objects.
     """
-    people  = {k: v for k, v in entities.items()
+    people = {k: v for k, v in entities.items()
                 if not any(c in k for c in COCO_CLASSES[1:])}
     objects = {k: v for k, v in entities.items() if k not in people}
 
@@ -342,7 +342,7 @@ def plot_confidence_over_time(entities, video_duration, scenario_label):
     fname = f"plot_confidence_{scenario_label}.png"
     fig.savefig(fname, dpi=150)
     plt.close(fig)
-    print(f"[PLOT] Confidence over time saved → {fname}")
+    print(f"[PLOT] Confidence over time saved {fname}")
 
 
 def analyse_quality(entities, log, scenario_label):
@@ -354,13 +354,13 @@ def analyse_quality(entities, log, scenario_label):
       - Flickering       → temporal confidence variance
     """
     print(f"\n{'='*60}")
-    print(f"  QUALITY REPORT  –  {scenario_label}")
+    print(f"QUALITY REPORT - {scenario_label}")
     print(f"{'='*60}")
 
     findings = {}
-    total_person_dets  = 0
-    unknown_dets       = 0
-    all_confs          = []
+    total_person_dets = 0
+    unknown_dets = 0
+    all_confs = []
 
     for frame in log["frames"]:
         for det in frame["detections"]:
@@ -371,8 +371,8 @@ def analyse_quality(entities, log, scenario_label):
             c = det["confidence"] if det["confidence"] is not None else det["det_conf"]
             all_confs.append(c)
 
-    global_avg_conf   = float(np.mean(all_confs)) if all_confs else 0.0
-    unknown_ratio     = unknown_dets / max(total_person_dets, 1)
+    global_avg_conf = float(np.mean(all_confs)) if all_confs else 0.0
+    unknown_ratio = unknown_dets / max(total_person_dets, 1)
 
     print(f"  Global mean confidence : {global_avg_conf:.3f}")
     print(f"  Unknown person ratio   : {unknown_ratio:.1%}  "
@@ -385,7 +385,7 @@ def analyse_quality(entities, log, scenario_label):
         if std > 0.12:
             flicker_entities[label] = std
 
-    issues   = []
+    issues = []
     suggestions = []
 
     if global_avg_conf < LOW_CONF_WARN_THRESH:
@@ -416,12 +416,12 @@ def analyse_quality(entities, log, scenario_label):
         )
 
     if not issues:
-        print("  No significant quality issues detected.")
+        print("No significant quality issues detected.")
     else:
-        print("\n   Issues detected:")
+        print("\nIssues detected:")
         for i, iss in enumerate(issues, 1):
             print(f"    {i}. {iss}")
-        print("\n  Suggestions:")
+        print("\nSuggestions:")
         for i, sug in enumerate(suggestions, 1):
             print(f"    {i}. {sug}")
 
